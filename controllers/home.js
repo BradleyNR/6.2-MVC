@@ -1,24 +1,27 @@
-let Data = require('../models/data');
+let Robot = require('../models/robots');
 
 let HomeController = {
   index: function(req, res){
-    res.render('index', {robots: Data.users})
+    //when pulling from database, need .find
+    Robot.find().then(function(robot){
+      res.render('index', {robot: robot});
+    });
   },
   profile: function(req, res){
     let robotName = req.params.name;
-    let targetItem;
-    Data.users.forEach((item) => {
-    if (item.name == robotName) {
-      targetItem = item;
-    }
+    Robot.findOne({name: robotName}).then(function(robot){
+      res.render('profile', {robot: robot});
     });
-    res.render('profile', {robot: targetItem});
   },
   jobseekers: function(req, res){
-    res.render('jobseekers', {robots: Data.users})
+    Robot.find().then(function(robot){
+      res.render('jobseekers', {robot: robot});
+    });
   },
   employed: function(req, res){
-    res.render('employed', {robots: Data.users})
+    Robot.find().then(function(robot){
+      res.render('employed', {robot: robot});
+    });
   }
 };
 
